@@ -1,0 +1,19 @@
+manifestVersion = 0
+
+[package]
+  type = "mod"
+  name = "Nyf's Quivers"
+  description = "Add's 5 levels of Quivers"
+  version = "Fabric-0.1.0"
+  platform = "fabric"
+  license = "ARR"
+
+[requirements]
+  minecraft = "*"
+  fabric = "*"
+
+[dependencies]
+  fabric = "*"
+
+[dev]
+  buildCommand = "./gradlew build"

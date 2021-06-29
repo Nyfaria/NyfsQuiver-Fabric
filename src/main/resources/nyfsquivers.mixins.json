@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "thenyfaria.nyfsquivers.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ShapedRecipeMixin",
+    "SoundEventAccessor",
+    "PlayerEntityMixin",
+    "GuiMixin",
+    "BowItemMixin",
+    "CrossBowMixin",
+    "ArrowEntityMixin",
+    "ItemEntityMixin",
+    "GateOfBabylonCustomBowItemMixin"
+  ],
+  "client": [
+    "ItemStackMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

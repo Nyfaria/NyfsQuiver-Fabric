@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "AA#",
+        "ALA",
+        "AAA"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:feather"
+        },
+        "L": {
+            "item": "nyfsquivers:iron_quiver"
+        },
+        "A": {
+            "tag": "c:silver_ingots"
+        }
+    },
+    "result": {
+        "item": "nyfsquivers:silver_quiver",
+        "count": 1
+    },
+    "group": "tools"
+}

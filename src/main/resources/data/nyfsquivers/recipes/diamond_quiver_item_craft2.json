@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "AA#",
+        "ALA",
+        "AAA"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:feather"
+        },
+        "L": {
+            "item": "nyfsquivers:silver_quiver"
+        },
+        "A": {
+            "item": "minecraft:diamond"
+        }
+    },
+    "result": {
+        "item": "nyfsquivers:diamond_quiver",
+        "count": 1
+    },
+    "group": "tools"
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "nyfsquivers",
+  "version": "Fabric-0.2.2",
+  "name": "Nyf's Quivers",
+  "description": "Quivers!",
+  "authors": [
+    "TheNyfaria"
+  ],
+  "license": "ARR",
+  "icon": "assets/nyfsquivers/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "thenyfaria.nyfsquivers.NyfsQuivers"
+    ],
+    "client": [
+      "thenyfaria.nyfsquivers.NyfsQuiversClient"
+    ]
+  },
+  "mixins": [
+    "nyfsquivers.mixins.json",
+    "nyfsquivers.trinkets.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.7.8+build.186",
+    "fabric": "*"
+  }
+}
