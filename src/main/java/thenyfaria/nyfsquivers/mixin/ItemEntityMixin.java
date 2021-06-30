@@ -3,20 +3,22 @@ package thenyfaria.nyfsquivers.mixin;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
-import jdk.vm.ci.code.ValueUtil;
-import jdk.vm.ci.code.site.Call;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.FireworkRocketItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import thenyfaria.nyfsquivers.item.QuiverItem;
 import thenyfaria.nyfsquivers.ui.QuiverScreenHandler;
@@ -26,7 +28,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Mixin(ItemEntity.class)
-public class ItemEntityMixin {
+public abstract class ItemEntityMixin extends Entity {
 
     @Shadow
     private UUID owner;
@@ -34,12 +36,17 @@ public class ItemEntityMixin {
     @Shadow
     private int pickupDelay;
 
+    @Shadow public abstract ItemStack getItem();
+
+    public ItemEntityMixin(EntityType<?> entityType, Level level) {
+        super(entityType, level);
+        throw new IllegalStateException("Mixin dummy constructor was called");
+    }
 
     @Inject(method = "playerTouch", at = @At(value="HEAD"),cancellable = true)
     public void mip(Player player, CallbackInfo c) {
-        ItemEntity itemEntity = (ItemEntity)(Object)this;
-        if (!itemEntity.level.isClientSide) {
-            ItemStack itemStack = itemEntity.getItem();
+        if (!level.isClientSide) {
+            ItemStack itemStack = getItem();
             Item item = itemStack.getItem();
             int i = itemStack.getCount();
             if (this.pickupDelay == 0 && (this.owner == null || this.owner.equals(player.getUUID()))) {
@@ -79,13 +86,13 @@ public class ItemEntityMixin {
                 }
                 if (player.getInventory().add(itemStack)) {
 
-                    player.take(itemEntity, i);
+                    player.take(this, i);
                     if (itemStack.isEmpty()) {
-                        itemEntity.discard();
+                        discard();
                         itemStack.setCount(i);
                     }
                     player.awardStat(Stats.ITEM_PICKED_UP.get(item), i);
-                    player.onItemPickup(itemEntity);
+                    player.onItemPickup((ItemEntity) (Object) this);
                 }
                 c.cancel();
             }

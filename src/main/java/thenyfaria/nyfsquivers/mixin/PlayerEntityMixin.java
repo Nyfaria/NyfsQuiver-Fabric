@@ -17,18 +17,18 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thenyfaria.nyfsquivers.config.QuiverInfo;
 import thenyfaria.nyfsquivers.item.QuiverItem;
+import thenyfaria.nyfsquivers.ui.ExtendedSimpleContainer;
 import thenyfaria.nyfsquivers.util.InventoryUtils;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-
 @Mixin(Player.class)
 public class PlayerEntityMixin {
 
     @Inject(method = "getProjectile", at = @At(value="HEAD"),cancellable = true)
-    public void getProjectile(ItemStack itemStack, CallbackInfoReturnable cir) {
+    public void getProjectile(ItemStack itemStack, CallbackInfoReturnable<ItemStack> cir) {
         if (!(itemStack.getItem() instanceof ProjectileWeaponItem)) {
             cir.setReturnValue(ItemStack.EMPTY);
         } else {
@@ -43,13 +43,7 @@ public class PlayerEntityMixin {
                         QuiverInfo meow = ((QuiverItem)beep.getItem()).getTier();
                         ListTag tag = beep.getOrCreateTag().getList("Inventory", NbtType.COMPOUND);
 
-                        SimpleContainer inventory = new SimpleContainer(meow.getRowWidth() * meow.getNumberOfRows()) {
-                            @Override
-                            public void setChanged() {
-                                beep.getOrCreateTag().put("Inventory", InventoryUtils.toTag(this));
-                                super.setChanged();
-                            }
-                        };
+                        SimpleContainer inventory = new ExtendedSimpleContainer(beep, meow.getRowWidth() * meow.getNumberOfRows());
 
                         InventoryUtils.fromTag(tag, inventory);
 
@@ -61,7 +55,6 @@ public class PlayerEntityMixin {
                     }
                 }
             }
-
         }
     }
 }

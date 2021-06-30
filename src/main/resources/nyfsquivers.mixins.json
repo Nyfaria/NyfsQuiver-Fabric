@@ -6,7 +6,6 @@
     "ShapedRecipeMixin",
     "SoundEventAccessor",
     "PlayerEntityMixin",
-    "GuiMixin",
     "BowItemMixin",
     "CrossBowMixin",
     "ArrowEntityMixin",
@@ -14,7 +13,8 @@
     "GateOfBabylonCustomBowItemMixin"
   ],
   "client": [
-    "ItemStackMixin"
+    "ItemStackMixin",
+    "GuiMixin"
   ],
   "injectors": {
     "defaultRequire": 1
