@@ -95,5 +95,7 @@ public abstract class GuiMixin extends GuiComponent {
         if (stackInQuiver != null && !stackInQuiver.isEmpty()) {
             renderSlot(NyfsQuivers.CONFIG.xpos + 3, NyfsQuivers.CONFIG.ypos + 3, f, getCameraPlayer(), stackInQuiver, 12);
         }
+        beep = null;
+        stackInQuiver = null;
     }
 }
