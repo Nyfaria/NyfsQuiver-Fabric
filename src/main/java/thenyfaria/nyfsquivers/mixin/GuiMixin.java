@@ -11,7 +11,6 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -35,7 +34,6 @@ public abstract class GuiMixin extends GuiComponent {
     @Unique private ItemStack beep;
     @Unique private ItemStack stackInQuiver;
 
-
     @Inject(
             at = @At(
                     value = "INVOKE",
@@ -44,7 +42,7 @@ public abstract class GuiMixin extends GuiComponent {
             ),
             method = "renderHotbar"
     )
-    private void renderHotbar(float f, PoseStack poseStack, CallbackInfo ci) {
+    private void getQuiverStacksFromPlayer(float f, PoseStack poseStack, CallbackInfo ci) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(getCameraPlayer());
         if(component.isPresent()) {
             List<Tuple<SlotReference, ItemStack>> allEquipped = component.get().getAllEquipped();
@@ -72,8 +70,8 @@ public abstract class GuiMixin extends GuiComponent {
             ),
             method = "renderHotbar"
     )
-    private void renderQuiverInHotbar(float f, PoseStack poseStack, CallbackInfo ci) {
-        if(!beep.isEmpty()) {
+    private void renderQuiverCurSlotInHotbar(float f, PoseStack poseStack, CallbackInfo ci) {
+        if(beep != null && !beep.isEmpty()) {
             int x = NyfsQuivers.CONFIG.xpos;
             int y = NyfsQuivers.CONFIG.ypos;
             int currentslot = beep.getOrCreateTag().getInt("current_slot");
@@ -83,19 +81,17 @@ public abstract class GuiMixin extends GuiComponent {
             poseStack.scale(.7f,.7f,.7f);
             font.draw(poseStack,String.valueOf(currentslot + 1),(x * 1.42857142857f) + 5,(y * 1.42857142857f) + 5, 0xFFFFFFFF);
             poseStack.scale(1.42857142857f,1.42857142857f,1.42857142857f);
-
         }
     }
 
     @Inject(
             at = @At(
                     value = "FIELD",
-                    target = "Lnet/minecraft/client/Options;attackIndicator:Lnet/minecraft/client/AttackIndicatorStatus;",
-                    opcode = Opcodes.GETSTATIC
+                    target = "Lnet/minecraft/client/Options;attackIndicator:Lnet/minecraft/client/AttackIndicatorStatus;"
             ),
             method = "renderHotbar"
     )
-    private void after(float f, PoseStack poseStack, CallbackInfo ci) {
+    private void renderQuiverSlotAfter(float f, PoseStack poseStack, CallbackInfo ci) {
         if (stackInQuiver != null && !stackInQuiver.isEmpty()) {
             renderSlot(NyfsQuivers.CONFIG.xpos + 3, NyfsQuivers.CONFIG.ypos + 3, f, getCameraPlayer(), stackInQuiver, 12);
         }

@@ -40,8 +40,8 @@ public abstract class ArrowEntityMixin extends Entity {
     }
     
     @Inject(at = @At("HEAD"), method = "playerTouch", cancellable = true)
-    private void checkForQuiver(Player player, CallbackInfo ci) {
-        if (!player.level.isClientSide && inGround && isNoPhysics() && shakeTime > 0) {
+    private void putFloorArrowInQuiver(Player player, CallbackInfo ci) {
+        if (!player.level.isClientSide && (inGround || isNoPhysics()) && shakeTime <= 0) {
             Optional<TrinketComponent> trinketComponent = TrinketsApi.getTrinketComponent(player);
 
             if (trinketComponent.isPresent() && pickup == AbstractArrow.Pickup.ALLOWED) {
@@ -57,11 +57,13 @@ public abstract class ArrowEntityMixin extends Entity {
                                 slot.setChanged();
                                 discard();
                                 ci.cancel();
+                                break;
                             }
                             if (slot.getItem().isEmpty()) {
                                 slot.set(this.getPickupItem());
                                 discard();
                                 ci.cancel();
+                                break;
                             }
                         }
                     }
