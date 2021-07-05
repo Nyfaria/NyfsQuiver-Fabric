@@ -2,6 +2,8 @@ package thenyfaria.nyfsquivers.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.emi.trinkets.api.SlotReference;
+import dev.emi.trinkets.api.TrinketComponent;
+import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,12 +16,14 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -38,6 +42,10 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Optional;
+
 
 public class QuiverItem extends Item implements TrinketRenderer {
 
@@ -107,21 +115,12 @@ public class QuiverItem extends Item implements TrinketRenderer {
         if (entity.hasItemInSlot(EquipmentSlot.CHEST)) {
             translate = 0.06f;
         }
+
         matrices.pushPose();
         TrinketRenderer.translateToChest(matrices, (PlayerModel<AbstractClientPlayer>) contextModel,(AbstractClientPlayer)entity);
-        matrices.translate(0, 0, translate);
-        blip.renderStatic(stack, ItemTransforms.TransformType.HEAD, 0xF000F0, 0xF000F0, matrices, vertexConsumers, 0);
-
+        matrices.translate(0, .5, translate);
+        blip.renderStatic(entity, stack, ItemTransforms.TransformType.HEAD, true, matrices, vertexConsumers, entity.level,0xF000F0,0xF000F0, 0);
         matrices.popPose();
-    }
-    @Environment(EnvType.CLIENT)
-    private HumanoidModel<LivingEntity> getModel() {
-        if (this.model == null) {
-            // Vanilla 1.17 uses EntityModels, EntityModelLoader and EntityModelLayers
-            this.model = new QuiverItemModel(QuiverItemModel.getTexturedModelData().bakeRoot());
-        }
-
-        return this.model;
     }
 
 }

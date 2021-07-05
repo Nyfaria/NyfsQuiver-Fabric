@@ -1,0 +1,20 @@
+{
+	"itemGroup.nyfsquivers.quiver": "Nyf의 화살통",
+
+	"ui.nyfsquivers.quiver": "화살통",
+
+	"item.nyfsquivers.basic_quiver": "화살통",
+	"item.nyfsquivers.iron_quiver": "철 화살통",
+	"item.nyfsquivers.copper_quiver": "구리 화살통",
+	"item.nyfsquivers.silver_quiver": "은 화살통",
+	"item.nyfsquivers.gold_quiver": "금 화살통",
+	"item.nyfsquivers.diamond_quiver": "다이아몬드 화살통",
+	"item.nyfsquivers.netherite_quiver": "네더라이트 화살통",
+
+	"category.nyfsquivers.keybindings": "Nyf의 화살통",
+	"key.nyfsquivers.open_quiver": "화살통 열기",
+	"key.nyfsquivers.increase_slot": "다음 슬롯",
+	"key.nyfsquivers.decrease_slot": "이전 슬롯",
+	"trinkets.slot.chest.quiver": "화살통"
+	
+}

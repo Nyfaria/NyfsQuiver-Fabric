@@ -1,0 +1,20 @@
+{
+  "itemGroup.nyfsquivers.quiver": "Nyf的箭袋",
+
+  "ui.nyfsquivers.quiver": "箭袋",
+
+  "item.nyfsquivers.basic_quiver": "箭袋",
+  "item.nyfsquivers.iron_quiver": "铁制箭袋",
+  "item.nyfsquivers.copper_quiver": "铜制箭袋",
+  "item.nyfsquivers.silver_quiver": "银质箭袋",
+  "item.nyfsquivers.gold_quiver": "金制箭袋",
+  "item.nyfsquivers.diamond_quiver": "钻石箭袋",
+  "item.nyfsquivers.netherite_quiver": "下界合金箭袋",
+
+  "category.nyfsquivers.keybindings": "Nyf的箭袋",
+  "key.nyfsquivers.open_quiver": "打开箭袋",
+  "key.nyfsquivers.increase_slot": "后一槽位",
+  "key.nyfsquivers.decrease_slot": "前一槽位",
+  "trinkets.slot.chest.quiver": "箭袋"
+
+}

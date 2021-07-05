@@ -8,6 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +27,7 @@ public class BowItemMixin {
     @Inject(method = "releaseUsing", at = @At(value="TAIL",shift = At.Shift.BEFORE),cancellable = true)
     public void boop(ItemStack itemStack, Level level, LivingEntity livingEntity, int i, CallbackInfo c) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(livingEntity);
-        if(component.isPresent()) {
+        if(component.isPresent() &&  !(((Player)livingEntity).getAbilities().instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, itemStack) > 0)) {
             List<Tuple<SlotReference, ItemStack>> allEquipped = component.get().getAllEquipped();
             for (Tuple<SlotReference, ItemStack> entry : allEquipped) {
                 ItemStack beep = entry.getB();

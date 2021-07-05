@@ -34,6 +34,8 @@ public abstract class GuiMixin extends GuiComponent {
     @Unique private ItemStack beep;
     @Unique private ItemStack stackInQuiver;
 
+
+
     @Inject(
             at = @At(
                     value = "INVOKE",

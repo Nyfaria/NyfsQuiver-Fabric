@@ -9,6 +9,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.FireworkRocketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -44,7 +46,7 @@ public abstract class ArrowEntityMixin extends Entity {
         if (!player.level.isClientSide && (inGround || isNoPhysics()) && shakeTime <= 0) {
             Optional<TrinketComponent> trinketComponent = TrinketsApi.getTrinketComponent(player);
 
-            if (trinketComponent.isPresent() && pickup == AbstractArrow.Pickup.ALLOWED) {
+            if (trinketComponent.isPresent() && pickup == AbstractArrow.Pickup.ALLOWED && this.getPickupItem().getItem() instanceof ArrowItem) {
                 List<Tuple<SlotReference, ItemStack>> equippedTrinkets = trinketComponent.get().getAllEquipped();
 
                 for (Tuple<SlotReference, ItemStack> trinket : equippedTrinkets) {

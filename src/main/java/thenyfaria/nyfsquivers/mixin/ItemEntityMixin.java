@@ -44,7 +44,7 @@ public abstract class ItemEntityMixin extends Entity {
     }
 
     @Inject(method = "playerTouch", at = @At(value="HEAD"),cancellable = true)
-    public void mip(Player player, CallbackInfo c) {
+    public void tryInsertQuiver(Player player, CallbackInfo c) {
         if (!level.isClientSide) {
             ItemStack itemStack = getItem();
             Item item = itemStack.getItem();
