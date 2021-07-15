@@ -44,7 +44,7 @@ public class NyfsQuiversClient implements ClientModInitializer {
     public void onInitializeClient() {
 
         ScreenRegistry.register(NyfsQuivers.CONTAINER_TYPE, QuiverHandledScreen::new);
-        //registerQuivers();
+        registerQuivers();
         NyfsQuiversKeybinds.initialize();
     }
     private void registerQuivers() {
