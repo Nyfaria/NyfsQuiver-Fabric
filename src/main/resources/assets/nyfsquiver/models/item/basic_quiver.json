@@ -1,0 +1,22 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "nyfsquiver:items/basicquiver"
+		},
+  "overrides": [
+    {
+      "predicate": {
+        "nyfsquiver:equipped": 1,
+        "nyfsquiver:arrows": 0
+      },
+      "model": "nyfsquiver:back/basicquiver"
+    },
+    {
+      "predicate": {
+        "nyfsquiver:equipped": 1,
+        "nyfsquiver:arrows": 1
+      },
+      "model": "nyfsquiver:back/basicquiver_noarrows"
+    }
+  ]
+}

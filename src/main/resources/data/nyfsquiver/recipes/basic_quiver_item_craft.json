@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "  #",
+        " L ",
+        "L  "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:feather"
+        },
+        "L": {
+            "item": "minecraft:leather"
+        }
+    },
+    "result": {
+        "item": "nyfsquiver:basic_quiver",
+        "count": 1
+    },
+    "group": "tools"
+}

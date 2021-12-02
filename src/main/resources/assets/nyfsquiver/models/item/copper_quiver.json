@@ -1,0 +1,22 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "nyfsquiver:items/copperquiver"
+		},
+  "overrides": [
+    {
+      "predicate": {
+        "nyfsquiver:equipped": 1,
+        "nyfsquiver:arrows": 0
+      },
+      "model": "nyfsquiver:back/copperquiver"
+    },
+    {
+      "predicate": {
+        "nyfsquiver:equipped": 1,
+        "nyfsquiver:arrows": 1
+      },
+      "model": "nyfsquiver:back/copperquiver_noarrows"
+    }
+  ]
+}
