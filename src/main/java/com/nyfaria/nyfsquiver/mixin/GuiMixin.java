@@ -80,8 +80,8 @@ public abstract class GuiMixin extends GuiComponent {
     private void renderQuiverCurSlotInHotbar(float f, PoseStack poseStack, CallbackInfo ci) {
         if(quiverStack != null && !quiverStack.isEmpty()) {
             if(quiverStack.getItem() instanceof QuiverItem) {
-                int x = NyfsQuivers.CONFIG.xpos;
-                int y = NyfsQuivers.CONFIG.ypos;
+                int x = NyfsQuivers.getInstance().CONFIG.xpos;
+                int y = NyfsQuivers.getInstance().CONFIG.ypos;
                 int currentslot = quiverStack.getOrCreateTag().getInt("current_slot");
                 blit(poseStack, x, y, 24, 22, 29, 24);
 
@@ -102,7 +102,7 @@ public abstract class GuiMixin extends GuiComponent {
     )
     private void renderQuiverSlotAfter(float f, PoseStack poseStack, CallbackInfo ci) {
         if (stackInQuiver != null && !stackInQuiver.isEmpty()) {
-            renderSlot(NyfsQuivers.CONFIG.xpos + 3, NyfsQuivers.CONFIG.ypos + 3, f, getCameraPlayer(), stackInQuiver, 12);
+            renderSlot(NyfsQuivers.getInstance().CONFIG.xpos + 3, NyfsQuivers.getInstance().CONFIG.ypos + 3, f, getCameraPlayer(), stackInQuiver, 12);
         }
         //quiverStack = null;
         stackInQuiver = null;

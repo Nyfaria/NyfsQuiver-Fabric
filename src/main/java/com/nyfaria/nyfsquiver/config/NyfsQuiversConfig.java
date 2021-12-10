@@ -1,13 +1,14 @@
 package com.nyfaria.nyfsquiver.config;
 
-import draylar.omegaconfig.api.Comment;
-import draylar.omegaconfig.api.Config;
+import me.shedaniel.autoconfig.annotation.Config;
 import net.minecraft.sounds.SoundEvents;
 
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
 
-public class NyfsQuiversConfig implements Config {
+public class NyfsQuiversConfig {
+
     public List<QuiverInfo> quivers = Arrays.asList(
             QuiverInfo.of("basic", 9, 1, false, SoundEvents.ARMOR_EQUIP_LEATHER),
             QuiverInfo.of("iron", 9, 2, false, SoundEvents.ARMOR_EQUIP_IRON),
@@ -18,14 +19,9 @@ public class NyfsQuiversConfig implements Config {
             QuiverInfo.of("netherite", 9, 5, true, SoundEvents.ARMOR_EQUIP_NETHERITE)
     );
 
-    @Comment(value = "Whether Quivers should play a sound when opened.")
-    public boolean playSound = true;
 
-    @Comment(value = "Position of HUD")
+    public boolean playSound = true;
     public int xpos = 0;
     public int ypos = 0;
-    @Override
-    public String getName() {
-        return "nyfsquiver";
-    }
+
 }

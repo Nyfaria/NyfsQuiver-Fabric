@@ -9,8 +9,8 @@
     "BowItemMixin",
     "CrossBowMixin",
     "ArrowEntityMixin",
-    "ItemEntityMixin",
-    "GateOfBabylonCustomBowItemMixin"
+    "ItemEntityMixin"//,
+    //"GateOfBabylonCustomBowItemMixin"
   ],
   "client": [
     "ItemStackMixin",

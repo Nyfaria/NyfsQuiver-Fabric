@@ -1,6 +1,7 @@
 package com.nyfaria.nyfsquiver.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.nyfaria.nyfsquiver.config.NyfsQuiversConfig;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.client.TrinketRenderer;
@@ -54,7 +55,8 @@ public class QuiverItem extends TrinketItem implements TrinketRenderer {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         player.startUsingItem(interactionHand);
 
-        if(NyfsQuivers.CONFIG.playSound) {
+
+        if(NyfsQuivers.getInstance().CONFIG.playSound) {
             if (level.isClientSide) {
                 level.playSound(player, player.getOnPos(), Registry.SOUND_EVENT.get(new ResourceLocation(quiver.getOpenSound())), SoundSource.PLAYERS, 1, 1);
             }

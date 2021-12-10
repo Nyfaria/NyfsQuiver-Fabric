@@ -1,3 +1,4 @@
+/*
 package com.nyfaria.nyfsquiver.mixin;
 
 import dev.emi.trinkets.api.SlotReference;
@@ -42,3 +43,4 @@ public class GateOfBabylonCustomBowItemMixin {
         }
     }
 }
+*/

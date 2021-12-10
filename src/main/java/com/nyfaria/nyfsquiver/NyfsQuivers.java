@@ -1,8 +1,11 @@
 package com.nyfaria.nyfsquiver;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.fabricmc.fabric.api.tag.TagFactory;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +18,6 @@ import com.nyfaria.nyfsquiver.config.NyfsQuiversConfig;
 import com.nyfaria.nyfsquiver.item.QuiverItem;
 import com.nyfaria.nyfsquiver.network.ServerNetworking;
 import com.nyfaria.nyfsquiver.ui.QuiverScreenHandler;
-import draylar.omegaconfig.OmegaConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -24,9 +26,13 @@ import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class NyfsQuivers implements ModInitializer {
 
@@ -34,24 +40,29 @@ public class NyfsQuivers implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final ResourceLocation CONTAINER_ID = id("quiver");
     public static final CreativeModeTab GROUP = FabricItemGroupBuilder.build(CONTAINER_ID, () -> new ItemStack(Registry.ITEM.get(id("basic_quiver"))));
-    public static final NyfsQuiversConfig CONFIG = OmegaConfig.register(NyfsQuiversConfig.class);
+    public NyfsQuiversConfig CONFIG;
     public static final MenuType<QuiverScreenHandler> CONTAINER_TYPE = ScreenHandlerRegistry.registerExtended(CONTAINER_ID, QuiverScreenHandler::new);
     public static final List<Item> QUIVERS = new ArrayList<>();
     public static final String BACKPACK_TRANSLATION_KEY = Util.makeDescriptionId("container", CONTAINER_ID);
     public static final Tag<Item> QUIVER_ITEMS = TagFactory.ITEM.create(new ResourceLocation(MOD_ID,"quiver_items"));
+    public static NyfsQuivers instance;
 
-
+    public static NyfsQuivers getInstance(){
+        return instance;
+    }
 
     @Override
     public void onInitialize() {
+        loadConfig();
         registerQuivers();
         ServerNetworking.init();
+        instance = this;
     }
 
     private void registerQuivers() {
         NyfsQuiversConfig defaultConfig = new NyfsQuiversConfig();
 
-        for (QuiverInfo quiver : NyfsQuivers.CONFIG.quivers) {
+        for (QuiverInfo quiver : CONFIG.quivers) {
             Item.Properties settings = new Item.Properties().tab(NyfsQuivers.GROUP).stacksTo(1);
 
             // setup fireproof item settings
@@ -85,5 +96,36 @@ public class NyfsQuivers implements ModInitializer {
     public static ResourceLocation id(String name) {
         return new ResourceLocation("nyfsquiver", name);
 
+    }
+    public void loadConfig() {
+        File configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "nyfsquivers_config.json");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        if (configFile.exists()) {
+            try {
+                FileReader fileReader = new FileReader(configFile);
+                CONFIG = gson.fromJson(fileReader, NyfsQuiversConfig.class);
+                fileReader.close();
+            } catch (IOException e) {
+                LOGGER.warn("could not load actuallyunbreaking config options: " + e.getLocalizedMessage());
+            }
+        } else {
+            CONFIG = new NyfsQuiversConfig();
+            saveConfig();
+        }
+    }
+
+    public void saveConfig() {
+        File configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "nyfsquivers_config.json");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        if (!configFile.getParentFile().exists()) {
+            configFile.getParentFile().mkdir();
+        }
+        try {
+            FileWriter fileWriter = new FileWriter(configFile);
+            fileWriter.write(gson.toJson(CONFIG));
+            fileWriter.close();
+        } catch (IOException e) {
+            LOGGER.warn("could not save actuallyunbreaking config options: " + e.getLocalizedMessage());
+        }
     }
 }
