@@ -22,6 +22,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import com.nyfaria.nyfsquiver.NyfsQuivers;
@@ -127,6 +129,12 @@ public class QuiverItem extends TrinketItem implements TrinketRenderer {
 
 
     }
+
+    public AbstractArrow modifyArrow(AbstractArrow abstractArrow){
+        return abstractArrow;
+    }
+
+
     @Environment(EnvType.CLIENT)
     private HumanoidModel<LivingEntity> getModel() {
         if (this.model == null) {
@@ -136,5 +144,6 @@ public class QuiverItem extends TrinketItem implements TrinketRenderer {
 
         return this.model;
     }
+
 
 }
