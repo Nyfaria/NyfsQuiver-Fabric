@@ -2,37 +2,35 @@ package com.nyfaria.nyfsquiver;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nyfaria.nyfsquiver.config.NyfsQuiversConfig;
+import com.nyfaria.nyfsquiver.config.QuiverInfo;
+import com.nyfaria.nyfsquiver.item.QuiverItem;
+import com.nyfaria.nyfsquiver.network.ServerNetworking;
+import com.nyfaria.nyfsquiver.ui.QuiverScreenHandler;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
-import net.fabricmc.fabric.api.tag.TagFactory;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
-import com.nyfaria.nyfsquiver.config.QuiverInfo;
-import com.nyfaria.nyfsquiver.config.NyfsQuiversConfig;
-import com.nyfaria.nyfsquiver.item.QuiverItem;
-import com.nyfaria.nyfsquiver.network.ServerNetworking;
-import com.nyfaria.nyfsquiver.ui.QuiverScreenHandler;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class NyfsQuivers implements ModInitializer {
 
@@ -44,7 +42,7 @@ public class NyfsQuivers implements ModInitializer {
     public static final MenuType<QuiverScreenHandler> CONTAINER_TYPE = ScreenHandlerRegistry.registerExtended(CONTAINER_ID, QuiverScreenHandler::new);
     public static final List<Item> QUIVERS = new ArrayList<>();
     public static final String BACKPACK_TRANSLATION_KEY = Util.makeDescriptionId("container", CONTAINER_ID);
-    public static final Tag<Item> QUIVER_ITEMS = TagFactory.ITEM.create(new ResourceLocation(MOD_ID,"quiver_items"));
+    public static final TagKey<Item> QUIVER_ITEMS = TagKey.create(Registry.ITEM_REGISTRY,new ResourceLocation(MOD_ID,"quiver_items"));
     public static NyfsQuivers instance;
 
     public static NyfsQuivers getInstance(){
