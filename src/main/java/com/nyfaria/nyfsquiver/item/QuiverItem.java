@@ -1,12 +1,15 @@
 package com.nyfaria.nyfsquiver.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.nyfaria.nyfsquiver.config.NyfsQuiversConfig;
+import com.nyfaria.nyfsquiver.NyfsQuivers;
+import com.nyfaria.nyfsquiver.config.QuiverInfo;
+import com.nyfaria.nyfsquiver.ui.QuiverScreenHandler;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -15,28 +18,23 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
-import com.nyfaria.nyfsquiver.NyfsQuivers;
-import com.nyfaria.nyfsquiver.config.QuiverInfo;
-import com.nyfaria.nyfsquiver.ui.QuiverScreenHandler;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,8 +76,8 @@ public class QuiverItem extends TrinketItem implements TrinketRenderer {
                 }
 
                 @Override
-                public Component getDisplayName() {
-                    return new TranslatableComponent(quiverItemStack.getItem().getDescriptionId());
+                public MutableComponent getDisplayName() {
+                    return Component.translatable(quiverItemStack.getItem().getDescriptionId());
                 }
 
                 @Override

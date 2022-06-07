@@ -88,7 +88,6 @@ public class QuiverHandledScreen extends AbstractContainerScreen<QuiverScreenHan
         bufferBuilder.vertex(matrices, (float)x1, (float)y1, (float)z).uv(u1, v1).endVertex();
         bufferBuilder.vertex(matrices, (float)x1, (float)y0, (float)z).uv(u1, v0).endVertex();
         bufferBuilder.vertex(matrices, (float)x0, (float)y0, (float)z).uv(u0, v0).endVertex();
-        bufferBuilder.end();
-        BufferUploader.end(bufferBuilder);
+        BufferUploader.drawWithShader(bufferBuilder.end());
     }
 }

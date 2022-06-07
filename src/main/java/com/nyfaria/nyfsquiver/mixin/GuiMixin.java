@@ -96,7 +96,7 @@ public abstract class GuiMixin extends GuiComponent {
     @Inject(
             at = @At(
                     value = "FIELD",
-                    target = "Lnet/minecraft/client/Options;attackIndicator:Lnet/minecraft/client/AttackIndicatorStatus;"
+                    target = "Lnet/minecraft/client/AttackIndicatorStatus;HOTBAR:Lnet/minecraft/client/AttackIndicatorStatus;"
             ),
             method = "renderHotbar"
     )
