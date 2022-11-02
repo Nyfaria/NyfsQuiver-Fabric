@@ -104,7 +104,7 @@ public class NyfsQuivers implements ModInitializer {
                 CONFIG = gson.fromJson(fileReader, NyfsQuiversConfig.class);
                 fileReader.close();
             } catch (IOException e) {
-                LOGGER.warn("could not load actuallyunbreaking config options: " + e.getLocalizedMessage());
+
             }
         } else {
             CONFIG = new NyfsQuiversConfig();
@@ -123,7 +123,7 @@ public class NyfsQuivers implements ModInitializer {
             fileWriter.write(gson.toJson(CONFIG));
             fileWriter.close();
         } catch (IOException e) {
-            LOGGER.warn("could not save actuallyunbreaking config options: " + e.getLocalizedMessage());
+
         }
     }
 }

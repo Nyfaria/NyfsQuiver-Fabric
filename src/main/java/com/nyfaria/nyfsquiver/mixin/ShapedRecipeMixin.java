@@ -19,10 +19,8 @@ public abstract class ShapedRecipeMixin {
 
     @Inject(method = "assemble",at = @At(value="HEAD"),cancellable = true)
     private void onCraft(CraftingContainer craftingInventory, CallbackInfoReturnable<ItemStack> cir) {
-        // get both backpacks
         ItemStack centerSlot = craftingInventory.getItem(4);
 
-        // only attempt to apply nbt if the center stack of the original recipe was a backpack
         if(centerSlot.getItem() instanceof QuiverItem) {
             ItemStack newBackpack = this.getResultItem().copy();
 

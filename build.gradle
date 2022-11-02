@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'fabric-loom' version '1.0-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -52,9 +52,6 @@ dependencies {
     //Gate of Babylon
     //modCompileOnly("curse.maven:gate-of-babylon-407500:3352501")
 
-    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
 }
 
 processResources {

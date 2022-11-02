@@ -1,9 +1,6 @@
 package com.nyfaria.nyfsquiver.config;
 
-import me.shedaniel.autoconfig.annotation.Config;
 import net.minecraft.sounds.SoundEvents;
-
-import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
 
