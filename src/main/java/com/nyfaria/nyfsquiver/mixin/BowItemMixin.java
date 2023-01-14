@@ -24,7 +24,7 @@ import java.util.Optional;
 @Mixin(BowItem.class)
 public class BowItemMixin {
 
-    @Inject(method = "releaseUsing", at = @At(value="TAIL",shift = At.Shift.BEFORE),cancellable = true)
+    @Inject(method = "releaseUsing", at = @At(value="INVOKE",target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z",shift = At.Shift.AFTER))
     public void boop(ItemStack itemStack, Level level, LivingEntity livingEntity, int i, CallbackInfo c) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(livingEntity);
         if(component.isPresent() &&  !(((Player)livingEntity).getAbilities().instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, itemStack) > 0)) {
