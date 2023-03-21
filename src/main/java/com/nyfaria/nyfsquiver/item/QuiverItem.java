@@ -5,7 +5,9 @@ import com.nyfaria.nyfsquiver.NyfsQuivers;
 import com.nyfaria.nyfsquiver.config.QuiverInfo;
 import com.nyfaria.nyfsquiver.ui.QuiverScreenHandler;
 import dev.emi.trinkets.api.SlotReference;
+import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketItem;
+import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -25,6 +27,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -37,6 +40,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Optional;
 
 
 public class QuiverItem extends TrinketItem implements TrinketRenderer {
@@ -143,5 +149,14 @@ public class QuiverItem extends TrinketItem implements TrinketRenderer {
         return this.model;
     }
 
-
+    public static ItemStack getEquippedQuiver(Player player){
+        Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
+        if(component.isPresent()){
+            List<Tuple<SlotReference, ItemStack>> quiverTrinket = component.get().getEquipped(stack -> stack.getItem() instanceof QuiverItem);
+            if(quiverTrinket.size() > 0){
+                return quiverTrinket.get(0).getB();
+            }
+        }
+        return ItemStack.EMPTY;
+    }
 }
