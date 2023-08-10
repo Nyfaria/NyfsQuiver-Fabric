@@ -21,6 +21,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -37,6 +39,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -64,7 +67,7 @@ public class QuiverItem extends TrinketItem implements TrinketRenderer {
 
         if(NyfsQuivers.getInstance().CONFIG.playSound) {
             if (level.isClientSide) {
-                level.playSound(player, player.getOnPos(), Registry.SOUND_EVENT.get(new ResourceLocation(quiver.getOpenSound())), SoundSource.PLAYERS, 1, 1);
+                level.playSound(player, player.getOnPos(), BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation(quiver.getOpenSound())), SoundSource.PLAYERS, 1, 1);
             }
         }
 
@@ -73,7 +76,7 @@ public class QuiverItem extends TrinketItem implements TrinketRenderer {
     }
 
     public static void openScreen(Player player, ItemStack quiverItemStack, InteractionHand hand) {
-        if(player.level != null && !player.level.isClientSide) {
+        if(player.level() != null && !player.level().isClientSide) {
             player.openMenu(new ExtendedScreenHandlerFactory() {
 
                 @Override
@@ -121,7 +124,7 @@ public class QuiverItem extends TrinketItem implements TrinketRenderer {
             matrices.pushPose();
             TrinketRenderer.translateToChest(matrices, (PlayerModel<AbstractClientPlayer>) contextModel, (AbstractClientPlayer) entity);
             matrices.translate(0, .5, translate);
-            blip.renderStatic(entity, stack, ItemTransforms.TransformType.HEAD, true, matrices, vertexConsumers, entity.level, light, light, light);
+            blip.renderStatic(entity, stack, ItemDisplayContext.HEAD, true, matrices, vertexConsumers, entity.level(), light, light, light);
             matrices.popPose();
         }
 /*        HumanoidModel<LivingEntity> model = this.getModel();

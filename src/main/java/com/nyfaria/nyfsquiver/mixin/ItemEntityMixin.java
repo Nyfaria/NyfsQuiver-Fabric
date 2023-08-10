@@ -2,6 +2,7 @@ package com.nyfaria.nyfsquiver.mixin;
 
 import com.nyfaria.nyfsquiver.NyfsQuivers;
 import com.nyfaria.nyfsquiver.config.QuiverInfo;
+import com.nyfaria.nyfsquiver.item.QuiverItem;
 import com.nyfaria.nyfsquiver.ui.ExtendedSimpleContainer;
 import com.nyfaria.nyfsquiver.util.InventoryUtils;
 import dev.emi.trinkets.api.SlotReference;
@@ -15,19 +16,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ArrowItem;
-import net.minecraft.world.item.FireworkRocketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import com.nyfaria.nyfsquiver.item.QuiverItem;
-import com.nyfaria.nyfsquiver.ui.QuiverScreenHandler;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,13 +33,14 @@ import java.util.UUID;
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin extends Entity {
 
-    @Shadow
-    private UUID owner;
+
 
     @Shadow
     private int pickupDelay;
 
     @Shadow public abstract ItemStack getItem();
+
+    @Shadow @Nullable public abstract Entity getOwner();
 
     public ItemEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -51,10 +49,10 @@ public abstract class ItemEntityMixin extends Entity {
 
     @Inject(method = "playerTouch", at = @At(value="HEAD"),cancellable = true)
     public void tryInsertQuiver(Player player, CallbackInfo c) {
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             ItemStack itemStack = getItem();
             Item item = itemStack.getItem();
-            if (this.pickupDelay == 0 && (this.owner == null || this.owner.equals(player.getUUID()))) {
+            if (this.pickupDelay == 0 && (this.getOwner() == null || this.getOwner().equals(player.getUUID()))) {
                 Optional<TrinketComponent> trinketComponent = TrinketsApi.getTrinketComponent(player);
                 if (trinketComponent.isPresent() && (itemStack.is(NyfsQuivers.QUIVER_ITEMS))) {
                     List<Tuple<SlotReference, ItemStack>> equippedTrinkets = trinketComponent.get().getAllEquipped();

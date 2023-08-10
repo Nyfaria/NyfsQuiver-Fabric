@@ -1,16 +1,21 @@
 package com.nyfaria.nyfsquiver.ui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.nyfaria.nyfsquiver.api.Dimension;
+import com.nyfaria.nyfsquiver.api.Rectangle;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import com.nyfaria.nyfsquiver.api.Dimension;
-import com.nyfaria.nyfsquiver.api.Rectangle;
+import org.joml.Matrix4f;
 
 public class QuiverHandledScreen extends AbstractContainerScreen<QuiverScreenHandler> {
 
@@ -32,25 +37,24 @@ public class QuiverHandledScreen extends AbstractContainerScreen<QuiverScreenHan
     }
     
     @Override
-    protected void renderBg(PoseStack matrices, float delta, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
         renderBackgroundTexture(matrices, new Rectangle(x, y, imageWidth, imageHeight), delta, 0xFFFFFFFF);
-        RenderSystem.setShaderTexture(0, new ResourceLocation("textures/gui/container/hopper.png"));
         for (Slot slot : getMenu().slots) {
-            this.blit(matrices, x + slot.x - 1, y + slot.y - 1, 43, 19, 18, 18);
+            matrices.blit( new ResourceLocation("textures/gui/container/hopper.png"), x + slot.x - 1, y + slot.y - 1, 43, 19, 18, 18);
         }
     }
     
     @Override
-    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
         this.renderTooltip(matrices, mouseX, mouseY);
     }
     
-    public void renderBackgroundTexture(PoseStack matrices, Rectangle bounds, float delta, int color) {
+    public void renderBackgroundTexture(GuiGraphics matrices, Rectangle bounds, float delta, int color) {
         float alpha = ((color >> 24) & 0xFF) / 255f;
         float red = ((color >> 16) & 0xFF) / 255f;
         float green = ((color >> 8) & 0xFF) / 255f;
@@ -64,20 +68,20 @@ public class QuiverHandledScreen extends AbstractContainerScreen<QuiverScreenHan
         // 9 Patch Texture
         
         // Four Corners
-        this.blit(matrices, x, y, 106 + xTextureOffset, 124 + yTextureOffset, 8, 8);
-        this.blit(matrices, x + width - 8, y, 248 + xTextureOffset, 124 + yTextureOffset, 8, 8);
-        this.blit(matrices, x, y + height - 8, 106 + xTextureOffset, 182 + yTextureOffset, 8, 8);
-        this.blit(matrices, x + width - 8, y + height - 8, 248 + xTextureOffset, 182 + yTextureOffset, 8, 8);
+        matrices.blit(GUI_TEXTURE, x, y, 106 + xTextureOffset, 124 + yTextureOffset, 8, 8);
+        matrices.blit(GUI_TEXTURE, x + width - 8, y, 248 + xTextureOffset, 124 + yTextureOffset, 8, 8);
+        matrices.blit(GUI_TEXTURE, x, y + height - 8, 106 + xTextureOffset, 182 + yTextureOffset, 8, 8);
+        matrices.blit(GUI_TEXTURE, x + width - 8, y + height - 8, 248 + xTextureOffset, 182 + yTextureOffset, 8, 8);
         
-        Matrix4f matrix = matrices.last().pose();
+        Matrix4f matrix = matrices.pose().last().pose();
         // Sides
-        blitdQuad(matrix, x + 8, x + width - 8, y, y + 8, getBlitOffset(), (114 + xTextureOffset) / 256f, (248 + xTextureOffset) / 256f, (124 + yTextureOffset) / 256f, (132 + yTextureOffset) / 256f);
-        blitdQuad(matrix, x + 8, x + width - 8, y + height - 8, y + height, getBlitOffset(), (114 + xTextureOffset) / 256f, (248 + xTextureOffset) / 256f, (182 + yTextureOffset) / 256f, (190 + yTextureOffset) / 256f);
-        blitdQuad(matrix, x, x + 8, y + 8, y + height - 8, getBlitOffset(), (106 + xTextureOffset) / 256f, (114 + xTextureOffset) / 256f, (132 + yTextureOffset) / 256f, (182 + yTextureOffset) / 256f);
-        blitdQuad(matrix, x + width - 8, x + width, y + 8, y + height - 8, getBlitOffset(), (248 + xTextureOffset) / 256f, (256 + xTextureOffset) / 256f, (132 + yTextureOffset) / 256f, (182 + yTextureOffset) / 256f);
+        blitdQuad(matrix, x + 8, x + width - 8, y, y + 8, 0, (114 + xTextureOffset) / 256f, (248 + xTextureOffset) / 256f, (124 + yTextureOffset) / 256f, (132 + yTextureOffset) / 256f);
+        blitdQuad(matrix, x + 8, x + width - 8, y + height - 8, y + height, 0, (114 + xTextureOffset) / 256f, (248 + xTextureOffset) / 256f, (182 + yTextureOffset) / 256f, (190 + yTextureOffset) / 256f);
+        blitdQuad(matrix, x, x + 8, y + 8, y + height - 8, 0, (106 + xTextureOffset) / 256f, (114 + xTextureOffset) / 256f, (132 + yTextureOffset) / 256f, (182 + yTextureOffset) / 256f);
+        blitdQuad(matrix, x + width - 8, x + width, y + 8, y + height - 8, 0, (248 + xTextureOffset) / 256f, (256 + xTextureOffset) / 256f, (132 + yTextureOffset) / 256f, (182 + yTextureOffset) / 256f);
         
         // Center
-        blitdQuad(matrix, x + 8, x + width - 8, y + 8, y + height - 8, getBlitOffset(), (114 + xTextureOffset) / 256f, (248 + xTextureOffset) / 256f, (132 + yTextureOffset) / 256f, (182 + yTextureOffset) / 256f);
+        blitdQuad(matrix, x + 8, x + width - 8, y + 8, y + height - 8, 0, (114 + xTextureOffset) / 256f, (248 + xTextureOffset) / 256f, (132 + yTextureOffset) / 256f, (182 + yTextureOffset) / 256f);
     }
     
     private static void blitdQuad(Matrix4f matrices, int x0, int x1, int y0, int y1, int z, float u0, float u1, float v0, float v1) {

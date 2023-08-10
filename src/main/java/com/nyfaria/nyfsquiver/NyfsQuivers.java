@@ -10,11 +10,14 @@ import com.nyfaria.nyfsquiver.ui.QuiverScreenHandler;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.inventory.MenuType;
@@ -37,12 +40,20 @@ public class NyfsQuivers implements ModInitializer {
     public static final String MOD_ID = "nyfsquiver";
     public static final Logger LOGGER = LogManager.getLogger();
     public static final ResourceLocation CONTAINER_ID = id("quiver");
-    public static final CreativeModeTab GROUP = FabricItemGroupBuilder.build(CONTAINER_ID, () -> new ItemStack(Registry.ITEM.get(id("basic_quiver"))));
+    public static final List<Item> QUIVERS = new ArrayList<>();
+    public static final CreativeModeTab GROUP = FabricItemGroup.builder()
+            .icon(() -> new ItemStack(BuiltInRegistries.ITEM.get(id("leather_quiver"))))
+            .title(Component.translatable("itemGroup.nyfsquiver.quiver"))
+            .displayItems((a,b) -> {
+                for (Item item : QUIVERS) {
+                    b.accept(item);
+                }
+            })
+            .build();
     public NyfsQuiversConfig CONFIG;
     public static final MenuType<QuiverScreenHandler> CONTAINER_TYPE = ScreenHandlerRegistry.registerExtended(CONTAINER_ID, QuiverScreenHandler::new);
-    public static final List<Item> QUIVERS = new ArrayList<>();
     public static final String BACKPACK_TRANSLATION_KEY = Util.makeDescriptionId("container", CONTAINER_ID);
-    public static final TagKey<Item> QUIVER_ITEMS = TagKey.create(Registry.ITEM_REGISTRY,new ResourceLocation(MOD_ID,"quiver_items"));
+    public static final TagKey<Item> QUIVER_ITEMS = TagKey.create(Registries.ITEM,new ResourceLocation(MOD_ID,"quiver_items"));
     public static NyfsQuivers instance;
 
     public static NyfsQuivers getInstance(){
@@ -61,7 +72,7 @@ public class NyfsQuivers implements ModInitializer {
         NyfsQuiversConfig defaultConfig = new NyfsQuiversConfig();
 
         for (QuiverInfo quiver : CONFIG.quivers) {
-            Item.Properties settings = new Item.Properties().tab(NyfsQuivers.GROUP).stacksTo(1);
+            Item.Properties settings = new Item.Properties().stacksTo(1);
 
             // setup fireproof item settings
             if (quiver.isFireImmune()) {
@@ -82,7 +93,7 @@ public class NyfsQuivers implements ModInitializer {
             }
 
 
-            QuiverItem registered = Registry.register(Registry.ITEM, new ResourceLocation("nyfsquiver", quiver.getName().toLowerCase() + "_quiver"), new QuiverItem(quiver, settings));
+            QuiverItem registered = Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("nyfsquiver", quiver.getName().toLowerCase() + "_quiver"), new QuiverItem(quiver, settings));
 
             TrinketRendererRegistry.registerRenderer(registered, (TrinketRenderer) registered);
             QUIVERS.add(registered);

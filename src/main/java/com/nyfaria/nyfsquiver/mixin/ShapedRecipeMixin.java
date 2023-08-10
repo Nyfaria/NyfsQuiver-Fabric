@@ -1,5 +1,6 @@
 package com.nyfaria.nyfsquiver.mixin;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -15,14 +16,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ShapedRecipe.class)
 public abstract class ShapedRecipeMixin {
 
-    @Shadow public abstract ItemStack getResultItem();
+
+    @Shadow public abstract ItemStack getResultItem(RegistryAccess registryAccess);
 
     @Inject(method = "assemble",at = @At(value="HEAD"),cancellable = true)
-    private void onCraft(CraftingContainer craftingInventory, CallbackInfoReturnable<ItemStack> cir) {
+    private void onCraft(CraftingContainer craftingInventory,RegistryAccess registryAccess, CallbackInfoReturnable<ItemStack> cir) {
         ItemStack centerSlot = craftingInventory.getItem(4);
 
         if(centerSlot.getItem() instanceof QuiverItem) {
-            ItemStack newBackpack = this.getResultItem().copy();
+            ItemStack newBackpack = this.getResultItem(registryAccess).copy();
 
             if(newBackpack.getItem() instanceof QuiverItem) {
                 ListTag oldTag = centerSlot.getOrCreateTag().getList("Inventory", NbtType.COMPOUND);

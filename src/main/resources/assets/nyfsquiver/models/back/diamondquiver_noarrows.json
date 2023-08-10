@@ -1,6 +1,6 @@
 {
 	"parent": "nyfsquiver:back/quiver_noarrows",
 	"textures": {
-		"texture": "nyfsquiver:back/diamondquiver"
+		"texture": "nyfsquiver:item/back/diamondquiver"
 	}
 }

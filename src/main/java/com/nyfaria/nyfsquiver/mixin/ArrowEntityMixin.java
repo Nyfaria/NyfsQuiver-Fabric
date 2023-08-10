@@ -42,7 +42,7 @@ public abstract class ArrowEntityMixin extends Entity {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/AbstractArrow;tryPickup(Lnet/minecraft/world/entity/player/Player;)Z"), method = "playerTouch", cancellable = true)
     private void putFloorArrowInQuiver(Player player, CallbackInfo ci) {
-        if (!player.level.isClientSide && (inGround || isNoPhysics()) && shakeTime <= 0) {
+        if (!player.level().isClientSide && (inGround || isNoPhysics()) && shakeTime <= 0) {
             ItemStack quiverItemStack = QuiverItem.getEquippedQuiver(player);
             if (quiverItemStack.isEmpty()) return;
             if (quiverItemStack.getItem() instanceof QuiverItem) {

@@ -1,7 +1,7 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "nyfsquiver:items/netheritequiver"
+		"layer0": "nyfsquiver:item/netheritequiver"
 		},
   "overrides": [
     {
