@@ -20,6 +20,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -124,7 +125,7 @@ public class QuiverItem extends TrinketItem implements TrinketRenderer {
             matrices.pushPose();
             TrinketRenderer.translateToChest(matrices, (PlayerModel<AbstractClientPlayer>) contextModel, (AbstractClientPlayer) entity);
             matrices.translate(0, .5, translate);
-            blip.renderStatic(entity, stack, ItemDisplayContext.HEAD, true, matrices, vertexConsumers, entity.level(), light, light, light);
+            blip.renderStatic(entity, stack, ItemDisplayContext.HEAD, true, matrices, vertexConsumers, entity.level(), light, OverlayTexture.NO_OVERLAY, 0);
             matrices.popPose();
         }
 /*        HumanoidModel<LivingEntity> model = this.getModel();
