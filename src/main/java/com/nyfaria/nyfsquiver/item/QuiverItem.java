@@ -152,7 +152,7 @@ public class QuiverItem extends TrinketItem implements TrinketRenderer {
         return this.model;
     }
 
-    public static ItemStack getEquippedQuiver(Player player){
+    public static ItemStack getEquippedQuiver(LivingEntity player){
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(player);
         if(component.isPresent()){
             List<Tuple<SlotReference, ItemStack>> quiverTrinket = component.get().getEquipped(stack -> stack.getItem() instanceof QuiverItem);

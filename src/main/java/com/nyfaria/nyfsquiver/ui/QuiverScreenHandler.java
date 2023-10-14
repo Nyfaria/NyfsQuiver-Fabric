@@ -133,7 +133,7 @@ public class QuiverScreenHandler extends AbstractContainerMenu {
 
         @Override
         public boolean mayPickup(Player playerEntity) {
-            return stackMovementIsAllowed(getItem());
+            return true;
         }
 
         @Override

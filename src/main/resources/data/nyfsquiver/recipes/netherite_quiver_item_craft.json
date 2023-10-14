@@ -1,5 +1,8 @@
 {
-    "type": "minecraft:smithing",
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "minecraft:netherite_upgrade_smithing_template"
+    },
     "base": {
         "item": "nyfsquiver:diamond_quiver"
     },
@@ -9,6 +12,5 @@
     "result": {
         "item": "nyfsquiver:netherite_quiver",
         "count": 1
-    },
-    "group": "tools"
+    }
 }

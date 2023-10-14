@@ -39,7 +39,7 @@ public class NyfsQuiversClient implements ClientModInitializer {
     private void registerQuivers() {
         for (Item registered : QUIVERS) {
             ItemProperties.register(registered, new ResourceLocation("nyfsquiver", "equipped"), (itemStack, clientWorld, livingEntity, i) -> {
-                ItemStack equippedQuiver = QuiverItem.getEquippedQuiver((Player) livingEntity);
+                ItemStack equippedQuiver = QuiverItem.getEquippedQuiver(livingEntity);
                 if (equippedQuiver.isEmpty()) return 0.0f;
                 if (equippedQuiver == itemStack) {
                     return 1.0f;

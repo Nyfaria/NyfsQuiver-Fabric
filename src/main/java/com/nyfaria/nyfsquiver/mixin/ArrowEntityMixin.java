@@ -1,5 +1,6 @@
 package com.nyfaria.nyfsquiver.mixin;
 
+import com.nyfaria.nyfsquiver.NyfsQuivers;
 import com.nyfaria.nyfsquiver.config.QuiverInfo;
 import com.nyfaria.nyfsquiver.item.QuiverItem;
 import com.nyfaria.nyfsquiver.ui.ExtendedSimpleContainer;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -42,6 +44,8 @@ public abstract class ArrowEntityMixin extends Entity {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/AbstractArrow;tryPickup(Lnet/minecraft/world/entity/player/Player;)Z"), method = "playerTouch", cancellable = true)
     private void putFloorArrowInQuiver(Player player, CallbackInfo ci) {
+        if(this.pickup != AbstractArrow.Pickup.ALLOWED) return;
+        if(!this.getPickupItem().is(NyfsQuivers.QUIVER_ITEMS)) return;
         if (!player.level().isClientSide && (inGround || isNoPhysics()) && shakeTime <= 0) {
             ItemStack quiverItemStack = QuiverItem.getEquippedQuiver(player);
             if (quiverItemStack.isEmpty()) return;

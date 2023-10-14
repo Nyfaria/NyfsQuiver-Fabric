@@ -42,7 +42,7 @@ public class NyfsQuivers implements ModInitializer {
     public static final ResourceLocation CONTAINER_ID = id("quiver");
     public static final List<Item> QUIVERS = new ArrayList<>();
     public static final CreativeModeTab GROUP = FabricItemGroup.builder()
-            .icon(() -> new ItemStack(BuiltInRegistries.ITEM.get(id("leather_quiver"))))
+            .icon(() -> new ItemStack(BuiltInRegistries.ITEM.get(id("basic_quiver"))))
             .title(Component.translatable("itemGroup.nyfsquiver.quiver"))
             .displayItems((a,b) -> {
                 for (Item item : QUIVERS) {
@@ -66,6 +66,7 @@ public class NyfsQuivers implements ModInitializer {
         registerQuivers();
         ServerNetworking.init();
         instance = this;
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,MOD_ID ,GROUP);
     }
 
     private void registerQuivers() {
@@ -95,7 +96,7 @@ public class NyfsQuivers implements ModInitializer {
 
             QuiverItem registered = Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("nyfsquiver", quiver.getName().toLowerCase() + "_quiver"), new QuiverItem(quiver, settings));
 
-            TrinketRendererRegistry.registerRenderer(registered, (TrinketRenderer) registered);
+            TrinketRendererRegistry.registerRenderer(registered, registered);
             QUIVERS.add(registered);
         }
     }

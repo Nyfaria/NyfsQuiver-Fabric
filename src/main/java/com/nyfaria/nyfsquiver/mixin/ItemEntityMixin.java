@@ -28,26 +28,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin extends Entity {
 
 
-
     @Shadow
     private int pickupDelay;
 
-    @Shadow public abstract ItemStack getItem();
+    @Shadow
+    public abstract ItemStack getItem();
 
-    @Shadow @Nullable public abstract Entity getOwner();
+    @Shadow
+    @Nullable
+    public abstract Entity getOwner();
 
     public ItemEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
         throw new IllegalStateException("Mixin dummy constructor was called");
     }
 
-    @Inject(method = "playerTouch", at = @At(value="HEAD"),cancellable = true)
+    @Inject(method = "playerTouch", at = @At(value = "HEAD"), cancellable = true)
     public void tryInsertQuiver(Player player, CallbackInfo c) {
         if (!level().isClientSide) {
             ItemStack itemStack = getItem();
@@ -60,36 +61,36 @@ public abstract class ItemEntityMixin extends Entity {
                         ItemStack quiverItemStack = trinket.getB();
                         if (trinket.getB().getItem() instanceof QuiverItem) {
 
-                            QuiverInfo quiverInfo = ((QuiverItem)quiverItemStack.getItem()).getTier();
+                            QuiverInfo quiverInfo = ((QuiverItem) quiverItemStack.getItem()).getTier();
                             ListTag tag = quiverItemStack.getOrCreateTag().getList("Inventory", NbtType.COMPOUND);
                             ExtendedSimpleContainer inventory = new ExtendedSimpleContainer(quiverItemStack, quiverInfo.getRowWidth() * quiverInfo.getNumberOfRows());
                             InventoryUtils.fromTag(tag, inventory);
                             int quiverSize = quiverInfo.getNumberOfRows() * quiverInfo.getRowWidth();
                             for (int i = 0; i < quiverSize; i++) {
-                                if(inventory.getItem(i).getItem() == item && inventory.getItem(i).getCount() < 64){
-                                    if(inventory.getItem(i).getCount() + itemStack.getCount() <= 64){
+                                if (inventory.getItem(i).getItem() == item && inventory.getItem(i).getCount() < 64) {
+                                    if (inventory.getItem(i).getCount() + itemStack.getCount() <= 64) {
                                         inventory.getItem(i).grow(itemStack.getCount());
                                         quiverItemStack.getOrCreateTag().put("Inventory", InventoryUtils.toTag(inventory));
                                         player.awardStat(Stats.ITEM_PICKED_UP.get(item), itemStack.getCount());
                                         itemStack.setCount(0);
                                         break;
                                     }
-                                    if(inventory.getItem(i).getCount() + itemStack.getCount() > 64){
+                                    if (inventory.getItem(i).getCount() + itemStack.getCount() > 64) {
                                         inventory.getItem(i).setCount(64);
                                         quiverItemStack.getOrCreateTag().put("Inventory", InventoryUtils.toTag(inventory));
-                                        player.awardStat(Stats.ITEM_PICKED_UP.get(item), 64-inventory.getItem(i).getCount());
-                                        itemStack.shrink(64-inventory.getItem(i).getCount());
+                                        player.awardStat(Stats.ITEM_PICKED_UP.get(item), 64 - inventory.getItem(i).getCount());
+                                        itemStack.shrink(64 - inventory.getItem(i).getCount());
                                     }
                                 }
-                                if(inventory.getItem(i).isEmpty()) {
-                                    inventory.setItem(i,itemStack);
+                                if (inventory.getItem(i).isEmpty()) {
+                                    inventory.setItem(i, itemStack);
                                     quiverItemStack.getOrCreateTag().put("Inventory", InventoryUtils.toTag(inventory));
                                     itemStack.setCount(0);
                                     c.cancel();
                                     break;
 
                                 }
-                                if(itemStack.getCount() == 0) {
+                                if (itemStack.getCount() == 0) {
                                     c.cancel();
                                     break;
                                 }

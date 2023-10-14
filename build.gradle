@@ -8,7 +8,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version + "-" + project.minecraft_version
+version = project.minecraft_version + "-fabric-" + project.mod_version
 group = project.maven_group
 
 
@@ -28,7 +28,7 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-    maven { url "https://maven.misterpemodder.com/libs-release/"}
+    maven { url "https://maven.misterpemodder.com/libs-release/" }
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://jitpack.io" }
 }
@@ -102,3 +102,33 @@ publishing {
         // mavenLocal()
     }
 }
+publishMods {
+    file = remapJar.archiveFile
+    changelog = file("changelog.md").text
+    type = STABLE
+    modLoaders.add("fabric")
+    displayName = "${archives_base_name}-${minecraft_version}-fabric-${mod_version}"
+    if(curseforge_publishing_enabled.toBoolean()) {
+        curseforge {
+            projectId = curseforge_project_id
+            accessToken = curseforge_token
+            minecraftVersions.add(minecraft_version)
+            requires {
+                slug = "trinkets"
+            }
+        }
+    }
+
+    if (modrinth_publishing_enabled.toBoolean()) {
+        modrinth {
+            accessToken = modrinth_token
+            projectId = modrinth_project_id
+            minecraftVersions.add(minecraft_version)
+            requires {
+                slug = "trinkets"
+            }
+        }
+    }
+
+}
+
